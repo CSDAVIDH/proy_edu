@@ -1,0 +1,16 @@
+.button_export_pdf{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #000;
+    transition: all 0.3s ease-in-out;
+}
+
+.button_export_pdf:hover{
+    background-color: red;
+    color: #fff;
+}

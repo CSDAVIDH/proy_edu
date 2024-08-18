@@ -1,0 +1,107 @@
+.sidebar_admin{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70px;
+    height: 100vh;
+    background-color: #2A3F54;
+    transition: all 0.5s ease-in-out;
+}
+
+.sidebar_admin.sidebar{
+    width: 230px;
+}
+
+.sidebar_menu{
+    width: 100%;
+    height: calc(100vh - 60px);
+    overflow-y: scroll;
+    transition: all 0.5s ease-in-out;
+}
+
+.sidebar_menu.sidebar{
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+.sidebar_menu::-webkit-scrollbar{
+    display: none;
+  }
+  .sidebar_menu.sidebar::-webkit-scrollbar{
+    display: block;
+  }
+.sidebar_links{
+    width: 100%;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 999px) {
+    .container_main{
+        width: calc(100% - 10px);
+        margin-left: 0;
+    }
+    .container_main.sidebar{
+        width: calc(100% - 80px);
+        margin-left: 70px;
+    }
+    .header_main{
+        width: calc(100% - 10px);
+        margin-left: 0;
+    }
+    .header_main.sidebar{
+        width: calc(100% - 80px);
+        margin-left: 70px;
+    }
+    .sidebar_menu{
+        overflow-y: scroll;
+    }
+    .sidebar_menu.sidebar{
+        height: calc(100vh - 60px);
+    }
+    .sidebar_menu::-webkit-scrollbar{
+        display: none;
+      }
+      .sidebar_menu.sidebar::-webkit-scrollbar{
+        display: none;
+      }
+
+    .sidebar_admin{
+        width: 70px;
+        transform: translateX(-70px);
+    }
+
+    .sidebar_admin.sidebar{
+        width: 70px;
+        transform: translateX(0px);
+    }
+}
+
+.scroll_sidebar::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.scroll_sidebar::-webkit-scrollbar:vertical {
+    width: 6px;
+}
+
+.scroll_sidebar::-webkit-scrollbar-button:increment,
+.scroll_sidebar::-webkit-scrollbar-button {
+    display: none;
+}
+
+.scroll_sidebar::-webkit-scrollbar:horizontal {
+    height: 6px;
+}
+
+.scroll_sidebar::-webkit-scrollbar-thumb {
+    background-color: #172d44;
+    border-radius: 0px;
+    border: 1px solid #412E34;
+}
+
+.scroll_sidebar::-webkit-scrollbar-track {
+    border-radius: 0px;
+    background-color: #2A3F54;
+}

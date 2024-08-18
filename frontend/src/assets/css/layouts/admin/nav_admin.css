@@ -1,0 +1,74 @@
+.admin_main{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    background-color: rgba(255, 255, 0, 0.432);
+}
+.admin_espaciado_navbar{
+    width: 100%;
+    height: 60px;
+}
+.nav_admin{
+    width: calc(100% - 70px);
+    height: 60px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    background-color: #EDEDED;
+    transition: all 0.5s ease-in-out;
+}
+.nav_admin.sidebar{
+    width: calc(100% - 230px);
+}
+.btn_nav{
+    font-size: 22px;
+    font-weight: bold;
+    transform: scale(1.2, 1);
+    padding-left: 15px 5px;
+    color: #73879C;
+    border: none;
+}
+.nav_cards{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav_cards_conf{
+    text-decoration: none;
+    border: none;
+}
+.nav_cards_conf i{
+    font-size: 20px;
+    color: #2A3F54;
+    padding: 10px;
+}
+.nav_cards_conf span{
+    opacity: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2A3F54;
+    position: absolute;
+    top: 50px;
+    margin-left: -60px;
+    transition: all 0.3s ease-in-out;
+}
+.nav_cards_conf:hover span{
+    opacity: 1;
+}
+@media (max-width: 999px) {
+    
+    .nav_admin{
+        width: calc(100%);
+        margin-left: -70px;
+    }
+    .nav_admin.sidebar{
+        width: calc(100% - 70px);
+        margin-left: 0px;
+    }
+}
