@@ -1,2 +1,2 @@
-# turbion
- Sistema Academico
+# proy_edu
+Sistema Academico
