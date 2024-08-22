@@ -34,6 +34,36 @@ export default {
     {
       path:'especialidades',
       ...EspecialidadesRoute
+    },    
+    {
+      path: 'notas',
+      name: 'admin.notas.index',
+      component: () => import('@/modules/admin/notas/pages/IndexNotas.vue'),
     },
+    {
+      path: 'boletines',
+      name: 'admin.boletines.index',
+      component: () => import('@/modules/admin/boletines/pages/IndexBoletines.vue'),
+    }, 
+    {
+      path: 'mensajes',
+      name: 'admin.mensajes.index',
+      component: () => import('@/modules/admin/mensajes/pages/IndexMensajes.vue'),
+    }, 
+    {
+      path: 'tareas',
+      name: 'admin.tareas.index',
+      component: () => import('@/modules/admin/tareas/pages/IndexTareas.vue'),
+    }, 
+    {
+      path: 'horarios',
+      name: 'admin.horarios.index',
+      component: () => import('@/modules/admin/horarios/pages/IndexHorarios.vue'),
+    }, 
+    {
+      path: 'galeria',
+      name: 'admin.galeria.index',
+      component: () => import('@/modules/admin/galeria/pages/IndexGaleria.vue'),
+    }, 
   ]
 }
