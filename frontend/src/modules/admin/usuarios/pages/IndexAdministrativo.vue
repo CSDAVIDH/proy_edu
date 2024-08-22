@@ -19,19 +19,19 @@ const queryClient = useQueryClient();
 
 
 const { isLoading, data: registros, isError, error } = useQuery({
-  queryKey: ['administrativos'], //unico
-  queryFn: getAdministrativos,
-  select: administrativos => administrativos.sort((a, b) => b.id - a.id),
+    queryKey: ['administrativos'], //unico
+    queryFn: getAdministrativos,
+    select: administrativos => administrativos.sort((a, b) => b.id - a.id),
 });
 
 const crear = () => {
-  openCreate();
-
+    openCreate();
+   
 }
 
 const editar = (item) => {
-  openEdit();
-  administrativo.value = { ...administrativo.value, ...item };
+    openEdit();
+    administrativo.value = { ...administrativo.value, ...item };
 }
 
 // const eliminar = (item) => {
@@ -67,69 +67,70 @@ const editar = (item) => {
 // }
 
 const filtered = () => {
-  if (search.value.length == 0) return registros.value;
-  const filter = registros.value.filter(item => {
-    if (
-      item.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase()) ||
-      item.genero.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase()) ||
-      item.email.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase())
-    ) {
-      return item;
-    }
-  });
-  return filter
+    if (search.value.length == 0) return registros.value;
+    const filter = registros.value.filter(item => {
+        if (
+            item.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase()) ||
+            item.genero.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase()) ||
+            item.email.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase()) 
+        ) {
+            return item;
+        }
+    });
+    return filter
 }
 
 console.log(registros.value)
 const headers = [
-  { text: "#", value: "id", },
-  { text: "NOMBRE", value: "nombres", sortable: true },
-  { text: "CEDULA", value: "ci", sortable: true },
-  { text: "GENERO", value: "genero", sortable: true },
-  { text: "CORREO", value: "email ", sortable: true },
-  { text: "CARGO", value: "cargo", sortable: true },
-  { text: "GRADO", value: "cargo", sortable: true },
-  { text: "ESTADO", value: "estado", sortable: true },
-  // { text: "ACCIÓN", value: "accion" },
+    { text: "#", value: "id", },
+    { text: "NOMBRE", value: "nombres", sortable: true },
+    { text: "CEDULA", value: "ci", sortable: true },
+    { text: "GENERO", value: "genero", sortable: true },
+    { text: "CORREO", value: "email ", sortable: true },
+    { text: "CARGO", value: "cargo", sortable: true },
+    { text: "GRADO", value: "cargo", sortable: true },
+    { text: "ESTADO", value: "estado", sortable: true },
+    // { text: "ACCIÓN", value: "accion" },
 ];
 </script>
 <template>
-  <template v-if="isLoading == true">
-    <Spiner />
-  </template>
-  <template v-else>
+    <template v-if="isLoading == true">
+        <Spiner />
+    </template>
+    <template v-else>
 
 
-    <Banner :title="'Lista de Administrativos'" />
-    <div class="d-flex align-items-center justify-content-end py-4">
-      <div class="row container">
-        <div class="col-md-10">
-          <input class="form-control" type="search" v-model="search" placeholder="Buscar">
+        <Banner :title="'Lista de Administrativos'" />
+        <div class="d-flex align-items-center justify-content-end py-4">
+            <div class="row container">
+                <div class="col-md-10">
+                    <input class="form-control" type="search" v-model="search" placeholder="Buscar">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-success" @click="crear">
+                        <span>Crear nuevo</span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="col-md-2">
-          <button class="btn btn-success" @click="crear">
-            <span>Crear nuevo</span>
-          </button>
-        </div>
-      </div>
-    </div>
-    <EasyDataTable :headers="headers" :items="filtered()" buttons-pagination :rowsPerPageMessage="'filas por página'"
-      :rowsOfPageSeparatorMessage="'de'" :emptyMessage="'No hay datos disponibles'">
-      <template #item-ci="item">
-        <span>{{ item.ci + ' ' + item.expedido }}</span>
-      </template>
-      <template #item-nombres="item">
-        <span>{{ item.nombre + ' ' + item.paterno + ' ' + item.materno }}</span>
-      </template>
-      <template #item-estado="item">
-        <template v-if="item.estado == 1">
-          <span class="badge bg-green text-primary">ACTIVO</span>
-        </template>
-        <template v-else>
-          <span class="text-danger">ELIMINADO</span>
-        </template>
-      </template>
-      <!-- <template #item-accion="item">
+        <EasyDataTable :headers="headers" :items="filtered()" buttons-pagination
+            :rowsPerPageMessage="'filas por página'" :rowsOfPageSeparatorMessage="'de'"
+            :emptyMessage="'No hay datos disponibles'">
+            <template #item-ci="item">
+                <span>{{ item.ci + ' ' + item.expedido }}</span>
+            </template>
+            <template #item-nombres="item">
+                <span>{{ item.nombre + ' ' + item.paterno + ' ' + item.materno }}</span>
+            </template>
+            <template #item-estado="item">
+                <template v-if="item.estado == 1">
+                    <span class="badge bg-green text-primary">ACTIVO</span>
+                </template>
+                <template v-else>
+                    <span class="text-danger">ELIMINADO</span>
+                </template>
+            </template>
+            <!-- <template #item-accion="item">
                 <template v-if="item.estado == 1">
                     <div class="operation-wrapper d-flex align-items-center gap-1">
                         <button @click="editar(item)" class="btn btn-primary">
@@ -141,6 +142,6 @@ const headers = [
                     </div>
                 </template>
             </template> -->
-    </EasyDataTable>
-  </template>
+        </EasyDataTable>
+    </template>
 </template>@/api/materias/materiasApi

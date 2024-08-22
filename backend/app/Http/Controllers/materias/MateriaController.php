@@ -16,9 +16,11 @@ class MateriaController extends Controller
             ->select(
                 'm.id as id',
                 'm.nombre as nombre',
+                'e.id as especialidad_id',
+                'g.id as grado_id',
                 'm.sigla as sigla',
                 'm.tipo as tipo',
-                'm.horas_cademicas as horas',
+                'm.horas_cademicas as horas_cademicas',
                 'm.sigla as sigla',
                 'm.porcentaje as porcentaje',
                 'g.descripcion as grado',

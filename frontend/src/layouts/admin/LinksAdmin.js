@@ -61,6 +61,31 @@ export const links = [
             },
         ]
     },
+    {
+        name: 'Notas',
+        route: 'admin.notas.index',
+        icon: 'fa-solid fa-book',
+    },
+    {
+        name: 'Boletines',
+        route: 'admin.boletines.index',
+        icon: 'fa-solid fa-ticket',
+    },
+    {
+        name: 'Mensajes',
+        route: 'admin.mensajes.index',
+        icon: 'fa-solid fa-message',
+    },
+    {
+        name: 'Tareas',
+        route: 'admin.tareas.index',
+        icon: 'fa-solid fa-list-check',
+    },
+    {
+        name: 'Horarios',
+        route: 'admin.horarios.index',
+        icon: 'fa-solid fa-calendar-days',
+    },
     // {  
     //     name: 'About',
     //     route: 'admin.index',
