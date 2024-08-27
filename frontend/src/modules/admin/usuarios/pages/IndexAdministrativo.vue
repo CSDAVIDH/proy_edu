@@ -1,70 +1,73 @@
 <script setup>
 import { ref } from 'vue';
 import { useModal } from '@/hook/useModal.vue';
-import { getAdministrativos } from '@/api/usuarios/administrativoApi';
+import { getAdministrativos, deleteAdministrativo } from '@/api/usuarios/administrativoApi';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import Swal from "sweetalert2";
 import { danger_alerta, show_alerta } from '@/components/AlertAdmin.vue';
 
 //components
 import Banner from '@/components/Banner.vue';
-import Spiner from '@/components/Spiner.vue'
+import Spiner from '@/components/Spiner.vue';
+import CreateAdministrativo from '../components/administrativos/CreateAdministrativo.vue';
+import EditAdministrativo from '../components/administrativos/EditAdministrativo.vue';
+import ModalPdf from '@/components/ModalView.vue';
 
-const administrativo = ref({});
+const administrativo = ref({
+    id: 0,
+    cv: '',
+});
 const search = ref('');
 const [create, openCreate, closeCreate] = useModal(false);
 const [edit, openEdit, closeEdit] = useModal(false);
 const [pdf, openPdf, closePdf] = useModal(false);
 const queryClient = useQueryClient();
 
-
 const { isLoading, data: registros, isError, error } = useQuery({
     queryKey: ['administrativos'], //unico
     queryFn: getAdministrativos,
-    select: administrativos => administrativos.sort((a, b) => b.id - a.id),
 });
 
 const crear = () => {
     openCreate();
-   
 }
 
 const editar = (item) => {
-    openEdit();
     administrativo.value = { ...administrativo.value, ...item };
+    openEdit();
 }
 
-// const eliminar = (item) => {
-//     Swal.fire({
-//         title: "Esta seguro?",
-//         text: "Una vez realizado, no podrá revertir la acción!",
-//         icon: "warning",
-//         showCancelButton: true,
-//         confirmButtonColor: "#3085d6",
-//         cancelButtonColor: "#d33",
-//         confirmButtonText: "Si, eliminar!",
-//     }).then((result) => {
-//         if (result.isConfirmed) {
-//             eliminarAdministrativo.mutate(item.id);
-//         }
-//     });
-// }
+const eliminar = (item) => {
+    Swal.fire({
+        title: "Esta seguro?",
+        text: "Una vez realizado, no podrá revertir la acción!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            eliminarAdministrativo.mutate(item);
+        }
+    });
+}
 
-// const eliminarAdministrativo = useMutation({
-//     mutationFn: deleteMateria,
-//     onSuccess: (response) => {
-//         queryClient.invalidateQueries('materias');
-//         show_alerta("Eliminado Correctamente");
-//     },
-//     onError: (error) => {
-//         danger_alerta("Fallo del Servidor");
-//     },
-// });
+const eliminarAdministrativo = useMutation({
+    mutationFn: deleteAdministrativo,
+    onSuccess: (response) => {
+        queryClient.invalidateQueries('administrativos');
+        show_alerta("Eliminado Correctamente");
+    },
+    onError: (error) => {
+        danger_alerta("Fallo del Servidor");
+    },
+});
 
-// const show_pdf = (item) => {
-//     materia.value = { ...materia.value, ...item };
-//     openPdf();
-// }
+const show_pdf = (item) => {
+    administrativo.value = { ...administrativo.value, ...item };
+    openPdf();
+}
 
 const filtered = () => {
     if (search.value.length == 0) return registros.value;
@@ -72,7 +75,7 @@ const filtered = () => {
         if (
             item.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase()) ||
             item.genero.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase()) ||
-            item.email.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase()) 
+            item.email.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase())
         ) {
             return item;
         }
@@ -80,25 +83,26 @@ const filtered = () => {
     return filter
 }
 
-console.log(registros.value)
 const headers = [
-    { text: "#", value: "id", },
+    { text: "#", value: "accion", },
     { text: "NOMBRE", value: "nombres", sortable: true },
     { text: "CEDULA", value: "ci", sortable: true },
     { text: "GENERO", value: "genero", sortable: true },
-    { text: "CORREO", value: "email ", sortable: true },
+    { text: "email", value: "email", sortable: true },
     { text: "CARGO", value: "cargo", sortable: true },
-    { text: "GRADO", value: "cargo", sortable: true },
+    { text: "GRADO", value: "grado", sortable: true },
     { text: "ESTADO", value: "estado", sortable: true },
-    // { text: "ACCIÓN", value: "accion" },
 ];
+
 </script>
 <template>
     <template v-if="isLoading == true">
         <Spiner />
     </template>
     <template v-else>
-
+        <CreateAdministrativo :isModal="create" @close="closeCreate" />
+        <EditAdministrativo :item="administrativo" :isModal="edit" @close="closeEdit" />
+        <ModalPdf :url="administrativo.cv" :isModal="pdf" @close="closePdf" />
 
         <Banner :title="'Lista de Administrativos'" />
         <div class="d-flex align-items-center justify-content-end py-4">
@@ -130,18 +134,31 @@ const headers = [
                     <span class="text-danger">ELIMINADO</span>
                 </template>
             </template>
-            <!-- <template #item-accion="item">
+            <template #item-accion="item">
                 <template v-if="item.estado == 1">
-                    <div class="operation-wrapper d-flex align-items-center gap-1">
-                        <button @click="editar(item)" class="btn btn-primary">
-                            <i class="fa-solid fa-pen-to-square"></i>
+                    <div class="d-flex align-items-center gap-1">
+                        <button class="btn btn-danger" @click="show_pdf(item)">
+                            <i class="fa-regular fa-file-pdf"></i>
                         </button>
-                        <button @click="eliminar(item)" class="btn btn-danger">
-                            <i class="fa-solid fa-x"></i>
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li>
+                                    <button @click="editar(item)" class="dropdown-item">
+                                        <i class="fa-solid fa-pen-to-square"></i> Editar</button>
+                                </li>
+                                <li>
+                                    <button @click="eliminar(item)" class="dropdown-item">
+                                        <i class="fa-solid fa-trash"></i> Eliminar</button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </template>
-            </template> -->
+            </template>
         </EasyDataTable>
     </template>
-</template>@/api/materias/materiasApi
+</template>

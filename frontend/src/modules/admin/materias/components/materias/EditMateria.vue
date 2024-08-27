@@ -41,6 +41,8 @@ const validaciones = {
     sigla: { required: true, minString: 3, maxString: 90 },
     horas_cademicas: { required: true, minNumber: 1, maxmaxNumberString: 999 },
     nivel: { required: true, minNumber: 1, maxmaxNumberString: 999 },
+    porcentaje: { required: true, minNumber: 1, maxmaxNumberString: 100 },
+    tipo: { required: true }
 };
 
 const [
@@ -107,7 +109,7 @@ const closeModal = () => {
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label fw-bold" for="nombre">NOMBRE DE LA MATERIA</label>
-                        <input type="text" placeholder="MATEMTICAS" id="nombre" :value="form.nombre" name="nombre"
+                        <input type="text" placeholder="MATEMÁTICAS" id="nombre" :value="form.nombre" name="nombre"
                             @change="handleChange" @blur="handleBlur" class="form-control" required />
                         <p class="fs-6 text-danger" v-if="errors.nombre">
                             {{ errors.nombre }}

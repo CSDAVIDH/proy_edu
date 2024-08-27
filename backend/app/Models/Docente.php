@@ -12,7 +12,7 @@ class Docente extends Model
     
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function personas()
+    public function persona()
     {
         return $this->belongsTo('App\Models\Persona');
     }

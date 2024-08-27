@@ -15,9 +15,9 @@ class Persona extends Model
     {
         return $this->hasMany('App\Models\Administrativo');
     }
-    public function docentes()
+    public function docente()
     {
-        return $this->hasMany('App\Models\Docente');
+        return $this->hasOne(Docente::class);
 
 
     }

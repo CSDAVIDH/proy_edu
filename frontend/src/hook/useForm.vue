@@ -1,6 +1,16 @@
 <script>
 import { ref } from "vue";
-import { required, minString, maxString, minNumber, maxNumber, minSize, maxSize, email } from "@/utils/validate.js";
+import {
+    nullable,
+    required,
+    minString,
+    maxString,
+    minNumber,
+    maxNumber,
+    minSize,
+    maxSize,
+    email
+} from "@/utils/validate.js";
 
 export const useForm = (initialForm, initialRules) => {
 
@@ -19,7 +29,7 @@ export const useForm = (initialForm, initialRules) => {
         Object.keys(rules).map((rule) => {
             validatorForm(e, rule, rules);
         })
-        if (errors.value[e.target.name]) {
+        if (errors.value[e.target.name] != null) {
             e.target.style.border = '1px solid red';
             setTimeout(() => {
                 e.target.style.border = '1px solid #dee2e6';
@@ -51,6 +61,10 @@ export const useForm = (initialForm, initialRules) => {
 
     const validatorForm = ({ target }, rule, rules) => {
         const characteres = rule.toString();
+        // validacion nullable
+        if (characteres === 'nullable') {
+            errors.value[target.name] = nullable()
+        };
         // validacion required
         if (characteres === 'required') {
             errors.value[target.name] = required(target.value)

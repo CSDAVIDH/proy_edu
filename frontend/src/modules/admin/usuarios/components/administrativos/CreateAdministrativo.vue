@@ -4,7 +4,7 @@ import ModalMd from "@/components/ModalMd.vue";
 import { useForm } from "@/hook/useForm.vue";
 import Swal from "sweetalert2";
 import { danger_alerta, show_alerta } from "@/components/AlertAdmin.vue";
-import { storeEstudiante } from "@/api/usuarios/estudianteApi";
+import { storeAdministrativo } from "@/api/usuarios/administrativoApi";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import user_default from "@/assets/image/user.png";
 
@@ -23,7 +23,7 @@ const closeModal = () => {
 const loading = ref(false);
 const img_preview = ref(null);
 const queryClient = useQueryClient();
-const estudiante = {
+const administrativo = {
     id: 0,
     nombre: null,
     paterno: null,
@@ -33,8 +33,9 @@ const estudiante = {
     expedido: null,
     estado_civil: null,
     genero: null,
-    fecha_alta: null,
-    matricula: null,
+    cargo: null,
+    grado: null,
+    cv: null,
     imagen: null,
 };
 
@@ -47,8 +48,9 @@ const validaciones = {
     email: { required: true, minString: 3, maxString: 90 },
     estado_civil: { required: true },
     genero: { required: true },
-    fecha_alta: { required: true },
-    matricula: { required: true },
+    cargo: { required: true, maxString: 45 },
+    grado: { required: true, maxString: 45 },
+    cv: { required: true, maxSize: 5000 },
     imagen: { nullable: true },
 };
 
@@ -61,7 +63,7 @@ const [
     handleFile,
     handleBlur,
     handleRevalue,
-] = useForm(estudiante, validaciones);
+] = useForm(administrativo, validaciones);
 
 const handleImage = (e) => {
     handleFile(e);
@@ -85,7 +87,7 @@ const registrar = () => {
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 loading.value = true;
-                createEstudiante.mutate(formData);
+                createAdministrativo.mutate(formData);
             },
         });
     } else {
@@ -93,15 +95,15 @@ const registrar = () => {
     }
 };
 
-const createEstudiante = useMutation({
-    mutationFn: storeEstudiante,
+const createAdministrativo = useMutation({
+    mutationFn: storeAdministrativo,
     onSuccess: (response) => {
         if (response.status === true) {
-            queryClient.invalidateQueries("estudiantes");
+            queryClient.invalidateQueries("administrativos");
             show_alerta("Agregado Correctamente");
             loading.value = false;
             closeModal();
-            handleRevalue(estudiante);
+            handleRevalue(administrativo);
         } else {
             loading.value = false;
             errors.value = response.response.data.errors;
@@ -113,11 +115,9 @@ const createEstudiante = useMutation({
     },
 });
 
-console.log(form.value)
-
 </script>
 <template>
-    <ModalMd :isModal="isModal" @close="closeModal" :title="'Registrar nuevo Estudiante'">
+    <ModalMd :isModal="isModal" @close="closeModal" :title="'Registrar nuevo Administrativo'">
         <form @submit.prevent="registrar" enctype="multipart/form-data">
             <div class="row">
                 <div v-if="img_preview" class="col-md-3 my-1 text-center">
@@ -216,6 +216,15 @@ console.log(form.value)
                     </div>
                 </div>
                 <div class="col-md-4 my-1">
+                    <div class="form-group">
+                        <label class="form-label fw-bold" for="cv">CURRICULUM</label>
+                        <input type="file" name="cv" @change="handleFile"  accept="application/pdf" class="form-control" />
+                        <p class="fs-6 text-danger" v-if="errors.cv">
+                            {{ errors.cv }}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 my-1">
                     <label class="form-label fw-bold" for="estado_civil">ESTADO CIVIL</label>
                     <select class="form-control" name="estado_civil" id="estado_civil" @change="handleChange"
                         @blur="handleBlur" required>
@@ -231,21 +240,21 @@ console.log(form.value)
                 </div>
                 <div class="col-md-4 my-1">
                     <div class="form-group">
-                        <label class="form-label fw-bold" for="matricula">MATRICULA</label>
-                        <input type="text" name="matricula" @change="handleChange" :value="form.matricula"
+                        <label class="form-label fw-bold" for="cargo">CARGO</label>
+                        <input type="text" name="cargo" @change="handleChange" :value="form.cargo"
                             class="form-control" />
-                        <p class="fs-6 text-danger" v-if="errors.matricula">
-                            {{ errors.matricula }}
+                        <p class="fs-6 text-danger" v-if="errors.cargo">
+                            {{ errors.cargo }}
                         </p>
                     </div>
                 </div>
                 <div class="col-md-4 my-1">
                     <div class="form-group">
-                        <label class="form-label fw-bold" for="fecha_alta">FECHA</label>
-                        <input type="date" name="fecha_alta" @change="handleChange" :value="form.fecha_alta"
+                        <label class="form-label fw-bold" for="grado">GRADO</label>
+                        <input type="text" name="grado" @change="handleChange" :value="form.grado"
                             class="form-control" />
-                        <p class="fs-6 text-danger" v-if="errors.fecha_alta">
-                            {{ errors.fecha_alta }}
+                        <p class="fs-6 text-danger" v-if="errors.grado">
+                            {{ errors.grado }}
                         </p>
                     </div>
                 </div>

@@ -1,11 +1,11 @@
 <script setup>
-import { ref } from "vue";
-import ModalMd from "@/components/ModalMd.vue";
+import { ref, watch } from 'vue';
+import ModalMd from '@/components/ModalMd.vue'
 import { useForm } from "@/hook/useForm.vue";
 import Swal from "sweetalert2";
-import { danger_alerta, show_alerta } from "@/components/AlertAdmin.vue";
-import { storeEstudiante } from "@/api/usuarios/estudianteApi";
-import { useMutation, useQueryClient } from "@tanstack/vue-query";
+import { danger_alerta, show_alerta } from '@/components/AlertAdmin.vue';
+import { updateDocente } from '@/api/usuarios/docenteApi';
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import user_default from "@/assets/image/user.png";
 
 const props = defineProps({
@@ -13,30 +13,31 @@ const props = defineProps({
         type: Boolean,
         required: true,
     },
+    item: {
+        type: Object,
+        required: true,
+    }
 });
 
 const emit = defineEmits(["close"]);
-
-const closeModal = () => {
-    emit("close");
-};
-const loading = ref(false);
 const img_preview = ref(null);
+const closeModal = () => {
+    emit('close');
+}
+
+watch(() => props.item, () => {
+    handleRevalue(props.item);
+    if (props.item.imagen) {
+        const url = import.meta.env.VITE_BACKEND_URL;
+        img_preview.value = url + "/storage/" + props.item.imagen;
+    } else {
+        img_preview.value = null;
+    }
+});
+
+//DEFINIMOS VARIABLE
+const loading = ref(false);
 const queryClient = useQueryClient();
-const estudiante = {
-    id: 0,
-    nombre: null,
-    paterno: null,
-    materno: null,
-    ci: null,
-    email: null,
-    expedido: null,
-    estado_civil: null,
-    genero: null,
-    fecha_alta: null,
-    matricula: null,
-    imagen: null,
-};
 
 const validaciones = {
     nombre: { required: true, minString: 3, maxString: 90 },
@@ -47,8 +48,9 @@ const validaciones = {
     email: { required: true, minString: 3, maxString: 90 },
     estado_civil: { required: true },
     genero: { required: true },
-    fecha_alta: { required: true },
-    matricula: { required: true },
+    especialidad: { required: true, maxString: 45 },
+    grado: { required: true, maxString: 45 },
+    cv: { nullable: true },
     imagen: { nullable: true },
 };
 
@@ -60,13 +62,8 @@ const [
     handleChange,
     handleFile,
     handleBlur,
-    handleRevalue,
-] = useForm(estudiante, validaciones);
-
-const handleImage = (e) => {
-    handleFile(e);
-    img_preview.value = URL.createObjectURL(e.target.files[0]);
-};
+    handleRevalue
+] = useForm(props.item, validaciones);
 
 const registrar = () => {
     verficador();
@@ -85,26 +82,25 @@ const registrar = () => {
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 loading.value = true;
-                createEstudiante.mutate(formData);
+                actualizarDocente.mutate(formData);
             },
         });
     } else {
         danger_alerta("Verificar Formulario");
     }
-};
+}
 
-const createEstudiante = useMutation({
-    mutationFn: storeEstudiante,
+const actualizarDocente = useMutation({
+    mutationFn: updateDocente,
     onSuccess: (response) => {
         if (response.status === true) {
-            queryClient.invalidateQueries("estudiantes");
-            show_alerta("Agregado Correctamente");
+            queryClient.invalidateQueries('docentes');
+            show_alerta("Actualizado Correctamente");
             loading.value = false;
             closeModal();
-            handleRevalue(estudiante);
         } else {
             loading.value = false;
-            errors.value = response.response.data.errors;
+            errors.value = response.response.data.errors
             danger_alerta("Fallo de Validacion");
         }
     },
@@ -113,11 +109,14 @@ const createEstudiante = useMutation({
     },
 });
 
-console.log(form.value)
+const handleImage = (e) => {
+    handleFile(e);
+    img_preview.value = URL.createObjectURL(e.target.files[0]);
+};
 
 </script>
 <template>
-    <ModalMd :isModal="isModal" @close="closeModal" :title="'Registrar nuevo Estudiante'">
+    <ModalMd :isModal="isModal" @close="closeModal" :title="'Editar registro'">
         <form @submit.prevent="registrar" enctype="multipart/form-data">
             <div class="row">
                 <div v-if="img_preview" class="col-md-3 my-1 text-center">
@@ -185,8 +184,8 @@ console.log(form.value)
                     </div>
                     <div class="form-group">
                         <label class="form-label fw-bold" for="genero">GÉNERO</label>
-                        <select class="form-control" name="genero" id="genero" @change="handleChange" @blur="handleBlur"
-                            required>
+                        <select class="form-control" name="genero" :value="form.genero" id="genero"
+                            @change="handleChange" @blur="handleBlur" required>
                             <option value="" selected>SELECCIONE UNA OPCIÓN</option>
                             <option value="MASCULINO">MASCULINO</option>
                             <option value="FEMENINO">FEMENINO</option>
@@ -198,7 +197,7 @@ console.log(form.value)
                 </div>
                 <div class="col-md-4 my-1">
                     <div class="form-group">
-                        <label class="form-label fw-bold" for="imagen">FOTOGRAFIA</label>
+                        <label class="form-label fw-bold" for="Imagen">FOTOGRAFIA</label>
                         <input type="file" name="imagen" @change="handleImage" accept="image/*" class="form-control" />
                         <p class="fs-6 text-danger" v-if="errors.imagen">
                             {{ errors.imagen }}
@@ -216,9 +215,19 @@ console.log(form.value)
                     </div>
                 </div>
                 <div class="col-md-4 my-1">
+                    <div class="form-group">
+                        <label class="form-label fw-bold" for="cv">CURRICULUM</label>
+                        <input type="file" name="cv" @change="handleFile" accept="application/pdf"
+                            class="form-control" />
+                        <p class="fs-6 text-danger" v-if="errors.cv">
+                            {{ errors.cv }}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 my-1">
                     <label class="form-label fw-bold" for="estado_civil">ESTADO CIVIL</label>
                     <select class="form-control" name="estado_civil" id="estado_civil" @change="handleChange"
-                        @blur="handleBlur" required>
+                        :value="form.estado_civil" @blur="handleBlur" required>
                         <option value="" selected>SELECCIONE UNA OPCIÓN</option>
                         <option value="soltero">SOLTERO</option>
                         <option value="casado">CASADO</option>
@@ -231,21 +240,21 @@ console.log(form.value)
                 </div>
                 <div class="col-md-4 my-1">
                     <div class="form-group">
-                        <label class="form-label fw-bold" for="matricula">MATRICULA</label>
-                        <input type="text" name="matricula" @change="handleChange" :value="form.matricula"
+                        <label class="form-label fw-bold" for="especialidad">ESPECIALIDAD</label>
+                        <input type="text" name="especialidad" @change="handleChange" :value="form.especialidad"
                             class="form-control" />
-                        <p class="fs-6 text-danger" v-if="errors.matricula">
-                            {{ errors.matricula }}
+                        <p class="fs-6 text-danger" v-if="errors.especialidad">
+                            {{ errors.especialidad }}
                         </p>
                     </div>
                 </div>
                 <div class="col-md-4 my-1">
                     <div class="form-group">
-                        <label class="form-label fw-bold" for="fecha_alta">FECHA</label>
-                        <input type="date" name="fecha_alta" @change="handleChange" :value="form.fecha_alta"
+                        <label class="form-label fw-bold" for="grado">GRADO</label>
+                        <input type="text" name="grado" @change="handleChange" :value="form.grado"
                             class="form-control" />
-                        <p class="fs-6 text-danger" v-if="errors.fecha_alta">
-                            {{ errors.fecha_alta }}
+                        <p class="fs-6 text-danger" v-if="errors.grado">
+                            {{ errors.grado }}
                         </p>
                     </div>
                 </div>
@@ -265,4 +274,3 @@ console.log(form.value)
         </form>
     </ModalMd>
 </template>
-<style scoped></style>

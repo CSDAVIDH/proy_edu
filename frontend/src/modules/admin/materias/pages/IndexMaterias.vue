@@ -21,7 +21,6 @@ const [edit, openEdit, closeEdit] = useModal(false);
 const [pdf, openPdf, closePdf] = useModal(false);
 const queryClient = useQueryClient();
 
-
 const { isLoading, data: registros, isError, error } = useQuery({
     queryKey: ['materias'], //unico
     queryFn: getMaterias,
@@ -90,7 +89,7 @@ const filtered = () => {
         if (
             item.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase()) ||
             item.sigla.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(search.value.toLowerCase()) ||
-            item.horas.toString().includes(search.value)
+            item.horas_cademicas.toString().includes(search.value)
         ) {
             return item;
         }
@@ -104,7 +103,7 @@ const headers = [
     { text: "SIGLA", value: "sigla", sortable: true },
     { text: "GRADO", value: "grado", sortable: true },
     { text: "ESPECIALIDAD", value: "especialidad", sortable: true },
-    { text: "HORAS ACADEMICAS", value: "horas", sortable: true },
+    { text: "HORAS ACADEMICAS", value: "horas_cademicas", sortable: true },
     { text: "ESTADO", value: "estado", sortable: true },
     { text: "ACCIÓN", value: "accion" },
 ];
@@ -122,7 +121,7 @@ const headers = [
         <EditMateria :isModal="edit" @close="closeEdit" :item="materia" :grados="grados" :especialidades="especialidades" />
         <!-- modal pdf  -->
         <!-- <ExamplePdf :isModal="pdf" @close="closePdf" :item="materia" /> -->
-
+    
         <Banner :title="'Lista de Materias'" />
         <div class="d-flex align-items-center justify-content-end py-4">
             <div class="row container">

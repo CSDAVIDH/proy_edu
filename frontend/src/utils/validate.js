@@ -1,5 +1,6 @@
 // documentacion 
 // tipos de validaciones separamos string y number => XXX
+// nullable
 // required
 // minStringXXX
 // maxStringXXXX
@@ -7,6 +8,10 @@
 // maxNumberXXXX
 // minSizeXXX
 // maxSizeXXXX
+
+export const nullable = () => {
+    return null;
+}
 
 export const required = (data) => {
     if (!data) {

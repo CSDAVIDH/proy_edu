@@ -30,15 +30,19 @@ const materia = {
     nombre: null,
     sigla: null,
     horas_cademicas: null,
+    porcentaje: null,
     grado_id: null,
     estado: null,
+    tipo: null,
 };
 
 const validaciones = {
     nombre: { required: true, minString: 3, maxString: 90 },
     sigla: { required: true, minString: 3, maxString: 90 },
+    porcentaje: { required: true, minNumber: 1, maxmaxNumberString: 100 },
     horas_cademicas: { required: true, minNumber: 1, maxmaxNumberString: 999 },
-    grado_id: { required: true, minNumber: 1, maxmaxNumberString: 999 },
+    grado_id: { required: true },
+    tipo: { required: true }
 };
 
 const [
@@ -60,7 +64,6 @@ const closeModal = () => {
 }
 
 const registrar = () => {
-  return console.log(form.value)
     verficador();
     if (validate.value) {
         Swal.fire({
@@ -101,10 +104,8 @@ const createMateria = useMutation({
 });
 
 const mySelectEvent = () => {
-    console.log('mySelectEvent')
 }
 const myChangeEvent = () => {
-    console.log('myChangeEvent')
 }
 
 </script>
@@ -146,8 +147,8 @@ const myChangeEvent = () => {
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label fw-bold" for="porcentaje">PORCENTAJE</label>
-                        <input type="text" :value="form.porcentaje" name="porcentaje" @change="handleChange" @blur="handleBlur"
-                            class="form-control" placeholder="%" required />
+                        <input type="text" :value="form.porcentaje" name="porcentaje" @change="handleChange"
+                            @blur="handleBlur" class="form-control" placeholder="%" required />
                         <p class="fs-6 text-danger" v-if="errors.porcentaje">
                             {{ errors.porcentaje }}
                         </p>
@@ -155,15 +156,16 @@ const myChangeEvent = () => {
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label fw-bold" for="grado_id">GRADO ACADEMICO</label>
-                        <v-select :options="grados" :reduce="grado => grado.id" label="grado_id"
+                        <label class="form-label fw-bold" for="grado_id">GRADO</label>
+                        <v-select :options="grados" :reduce="grado => grado.id" label="descripcion"
                             v-model="form.grado_id" name="grado_id" id="grado_id" placeholder="Elige un Grado"
                             :required="true">
-                            <template  #option="option" :required="true">
+                            <template #option="option" :required="true">
                                 <span>{{ option.descripcion }}</span>
                             </template>
                             <template #search="{ attributes, events }">
-                                <input class="vs__search" :required="!form.grado_id" v-bind="attributes" v-on="events" />
+                                <input class="vs__search" :required="!form.grado_id" v-bind="attributes"
+                                    v-on="events" />
                             </template>
                         </v-select>
                         <p class="fs-6 text-danger" v-show="errors.grado_id">
@@ -174,14 +176,15 @@ const myChangeEvent = () => {
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label fw-bold" for="especialidad_id">ESPECIALIDAD</label>
-                        <v-select :options="especialidades" :reduce="especialidad => especialidad.id" label="especialidad_id"
-                            v-model="form.especialidad_id" name="especialidad_id" id="especialidad_id" placeholder="Elige una Especialidad"
-                            :required="true">
-                            <template  #option="option" :required="true">
-                                <span>{{ option.descripcion }}</span>
+                        <v-select :options="especialidades" :reduce="especialidad => especialidad.id"
+                            label="descripcion" v-model="form.especialidad_id" name="especialidad_id"
+                            id="especialidad_id" placeholder="Elige una Especialidad" :required="true">
+                            <template #option="option" :required="true">
+                                <span>{{ option.nombre }}</span>
                             </template>
                             <template #search="{ attributes, events }">
-                                <input class="vs__search" :required="!form.especialidad_id" v-bind="attributes" v-on="events" />
+                                <input class="vs__search" :required="!form.especialidad_id" v-bind="attributes"
+                                    v-on="events" />
                             </template>
                         </v-select>
                         <p class="fs-6 text-danger" v-show="errors.especialidad_id">
@@ -189,7 +192,7 @@ const myChangeEvent = () => {
                         </p>
                     </div>
                 </div>
-               
+
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label fw-bold" for="nivel">TIPO</label>
@@ -200,7 +203,7 @@ const myChangeEvent = () => {
                             <option value="1">Materia</option>
                             <option value="2">Formación</option>
                             <option value="3">Desquite</option>
-                         
+
                         </select>
                         <p class="fs-6 text-danger" v-show="errors.tipo">
                             {{ errors.tipo }}

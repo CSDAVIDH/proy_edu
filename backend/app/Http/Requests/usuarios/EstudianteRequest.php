@@ -23,28 +23,63 @@ class EstudianteRequest extends FormRequest
     public function rules(Request $request): array
     {
         if ($request->id == 0) {
-
-            return [
-                'paterno' => 'required|string|max:90',
-                'materno' => 'required|string|max:90',
-                'nombre' => 'required|string|max:90',
-                'ci' => 'required|string|max:20|unique:personas,ci',
-                'expedido' => 'required',
-                'email' => 'required|email|unique:users',
-                'nota' => 'required',
-                'genero' => 'required'
-            ];
+            if ($request->hasFile('imagen')) {
+                return [
+                    'nombre' => 'required|string|max:90',
+                    'paterno' => 'required|string|max:90',
+                    'materno' => 'required|string|max:90',
+                    'ci' => 'required|string|max:20|unique:personas,ci',
+                    'expedido' => 'required',
+                    'email' => 'required|email|unique:users',
+                    'estado_civil' => 'required',
+                    'genero' => 'required',
+                    'matricula' => 'required|string|max:45|unique:estudiantes,matricula',
+                    'imagen' => 'file|max:2048|mimes:jpeg,jpg,png',
+                    'fecha_alta' => 'required'
+                ];
+            } else {
+                return [
+                    'nombre' => 'required|string|max:90',
+                    'paterno' => 'required|string|max:90',
+                    'materno' => 'required|string|max:90',
+                    'ci' => 'required|string|max:20|unique:personas,ci',
+                    'expedido' => 'required',
+                    'email' => 'required|email|unique:users',
+                    'estado_civil' => 'required',
+                    'genero' => 'required',
+                    'matricula' => 'required|string|max:45|unique:estudiantes,matricula',
+                    'fecha_alta' => 'required'
+                ];
+            }
         } else {
-            return [
-                'paterno' => 'required|string|max:90',
-                'materno' => 'required|string|max:90',
-                'nombre' => 'required|string|max:90',
-                'ci' => 'required|string|max:20|unique:personas,ci'.$request->id,
-                'expedido' => 'required',
-                'email' => 'required|email|unique:users'.$request->id,
-                'nota' => 'required',
-                'genero' => 'required'
-            ];
+            if ($request->hasFile('imagen')) {
+                return [
+                    'nombre' => 'required|string|max:90',
+                    'paterno' => 'required|string|max:90',
+                    'materno' => 'required|string|max:90',
+                    'ci' => 'required|string|max:20|unique:personas,ci,' . $request->persona_id,
+                    'expedido' => 'required',
+                    'email' => 'required|email|unique:users,email,' . $request->user_id,
+                    'estado_civil' => 'required',
+                    'genero' => 'required',
+                    'matricula' => 'required|string|max:45|unique:estudiantes,matricula,' . $request->id,
+                    'imagen' => 'file|max:2048|mimes:jpeg,jpg,png',
+                    'fecha_alta' => 'required'
+                ];
+            } else {
+                return [
+                    'nombre' => 'required|string|max:90',
+                    'paterno' => 'required|string|max:90',
+                    'materno' => 'required|string|max:90',
+                    'ci' => 'required|string|max:20|unique:personas,ci,' . $request->persona_id,
+                    'expedido' => 'required',
+                    'email' => 'required|email|unique:users,email,' . $request->user_id,
+                    'estado_civil' => 'required',
+                    'genero' => 'required',
+                    'matricula' => 'required|string|max:45|unique:estudiantes,matricula,' . $request->id,
+                    'fecha_alta' => 'required'
+                ];
+            }
         }
     }
 }

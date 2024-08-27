@@ -16,10 +16,13 @@ return new class extends Migration
             $table->string('nombre',45);
             $table->string('paterno',45);
             $table->string('materno',45);
+            $table->string('direccion',120)->nullable();
+            $table->integer('telefono')->nullable();
             $table->string('ci',45);
             $table->string('expedido',45);
             $table->string('estado_civil');
             $table->string('genero');
+            $table->string('imagen')->nullable();
             $table->tinyInteger('estado')->default(1);
             $table->unsignedBigInteger('user_id'); 
           

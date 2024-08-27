@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('grado',45);
             $table->string('especialidad',45);
-            $table->string('cv',45);
+            $table->string('cv');
             $table->tinyInteger('estado')->default(1);
             $table->unsignedBigInteger('persona_id'); 
     

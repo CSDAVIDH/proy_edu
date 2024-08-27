@@ -17,6 +17,11 @@ return new class extends Migration
             $table->date('fecha_alta');
             $table->integer('nota_ingreso')->default(0);
             $table->date('fecha_baja')->nullable();
+            $table->text('url_drive')->nullable();
+           // $table->date('anio_egreso');
+            //$table->string('anio_servicio_militar')->nullable();
+            //$table->string('institucion_militar')->nullable();
+
             $table->tinyInteger('reincidencia')->default(0); // maximo 3 veces
             $table->tinyInteger('observacion')->default(0); // 0 ingreso - 1 inscrito - 2 aprobado - 3 reprobado - 4 egresado
             $table->tinyInteger('estado')->default(1);// 0 baja - 1 alta

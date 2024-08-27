@@ -21,9 +21,9 @@
     "vue": "^3.4.29",
     "vue-final-modal": "^4.5.4",
     "vue-router": "^4.3.3",
+    "vue-select": "^4.0.0-beta.6",
     "vue3-easy-data-table": "^1.5.47",
-    "vuejs-paginate-next": "^1.0.2",
-    "vue-select": "^4.0.0-beta.6"
+    "vuejs-paginate-next": "^1.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
