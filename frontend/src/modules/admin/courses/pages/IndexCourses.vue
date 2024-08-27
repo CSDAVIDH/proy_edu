@@ -4,7 +4,7 @@ import CreateCourse from '../components/CreateCourse.vue';
 import EditCourse from '../components/EditCourse.vue';
 import ExamplePdf from '../components/ExamplePdf.vue';
 import { useModal } from '@/hook/useModal.vue';
-import { getCursos, deleteCurso } from '@/api/cursosApi'; //qqui
+import { getCursos, deleteCurso } from '@/api/dashboardApi'; //qqui
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import Swal from "sweetalert2";
 import { danger_alerta, show_alerta } from '@/components/AlertAdmin.vue';

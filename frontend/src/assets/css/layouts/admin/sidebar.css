@@ -41,6 +41,7 @@
     .container_main{
         width: calc(100% - 10px);
         margin-left: 0;
+        
     }
     .container_main.sidebar{
         width: calc(100% - 80px);

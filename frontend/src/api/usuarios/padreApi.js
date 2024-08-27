@@ -3,8 +3,8 @@ import axios from 'axios';
 
 const authStore = useAuthStore();
 
-export const getCursos = async () => {
-    const response = await axios.get('/api/cursos', {
+export const getPadres = async () => {
+    const response = await axios.get('/api/padres', {
         headers: {
             'Authorization': 'Bearer ' + authStore.authToken,
         }
@@ -14,8 +14,8 @@ export const getCursos = async () => {
     return response;
 }
 
-export const storeCurso = async (body) => {
-    const response = await axios.post('/api/cursos/store', body, {
+export const storePadre = async (body) => {
+    const response = await axios.post('/api/padre/store', body, {
         headers: {
             'Authorization': 'Bearer ' + authStore.authToken,
         }
@@ -25,8 +25,8 @@ export const storeCurso = async (body) => {
     return response;
 }
 
-export const updateCurso = async (body) => {
-    const response = await axios.post('/api/cursos/update', body, {
+export const updatePadre = async (body) => {
+    const response = await axios.post('/api/padre/update', body, {
         headers: {
             'Authorization': 'Bearer ' + authStore.authToken,
         }
@@ -36,8 +36,8 @@ export const updateCurso = async (body) => {
     return response;
 }
 
-export const deleteCurso = async (body) => {
-    const response = await axios.delete(`/api/cursos/${body}`, {
+export const deletePadre = async (body) => {
+    const response = await axios.delete(`/api/padre/delete/${body.persona_id}`, {
         headers: {
             'Authorization': 'Bearer ' + authStore.authToken,
         }
@@ -47,3 +47,13 @@ export const deleteCurso = async (body) => {
     return response;
 }
 
+export const passwordPadre = async (body) => {
+    const response = await axios.put(`/api/padre/password/${body.id}`, body, {
+        headers: {
+            'Authorization': 'Bearer ' + authStore.authToken,
+        }
+    })
+        .then((response) => { return response.data })
+        .catch((error) => { return error })
+    return response;
+}

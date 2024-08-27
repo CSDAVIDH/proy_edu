@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(GradoSeeder::class);
         $this->call(DocenteSeeder::class);
         $this->call(EstudianteSeeder::class);
+        $this->call(PadreSeeder::class);
         $this->call(MateriaSeeder::class);
         $this->call(ParaleloSeeder::class);
        

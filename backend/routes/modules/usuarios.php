@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\usuarios\AdministrativoController;
 use App\Http\Controllers\usuarios\DocenteController;
 use App\Http\Controllers\usuarios\EstudianteController;
+use App\Http\Controllers\usuarios\PadreController;
 use Illuminate\Support\Facades\Route;
 
 // administrativos
@@ -73,14 +75,29 @@ Route::middleware(['auth:sanctum'])
     ->delete('/estudiante/delete/{persona}', [EstudianteController::class, 'delete'])
     ->name('estudiante.delete');
 
-// Route::middleware(['auth:sanctum'])
-//     ->post('/cursos/store', [AdministrativoController::class, 'store'])
-//     ->name('curso.store');
+// padre 
 
-// Route::middleware(['auth:sanctum'])
-//     ->post('/cursos/update', [AdministrativoController::class, 'update'])
-//     ->name('curso.update');
+Route::middleware(['auth:sanctum'])
+    ->get('/padres', [PadreController::class, 'index'])
+    ->name('padres.index');
 
-// Route::middleware(['auth:sanctum'])
-//     ->delete('/cursos/{id_course}', [AdministrativoController::class, 'delete'])
-//     ->name('curso.delete');
+Route::middleware(['auth:sanctum'])
+    ->get('/padre/{padre_id}', [PadreController::class, 'show'])
+    ->name('padre.show');
+
+Route::middleware(['auth:sanctum'])
+    ->post('/padre/store', [PadreController::class, 'store'])
+    ->name('padre.store');
+
+Route::middleware(['auth:sanctum'])
+    ->post('/padre/update', [PadreController::class, 'update'])
+    ->name('padre.update');
+
+Route::middleware(['auth:sanctum'])
+    ->delete('/padre/delete/{persona}', [PadreController::class, 'delete'])
+    ->name('padre.delete');
+
+// dashboard 
+Route::middleware(['auth:sanctum'])
+    ->get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard.index');

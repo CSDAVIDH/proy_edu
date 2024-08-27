@@ -4,7 +4,7 @@ import ModalMd from "@/components/ModalMd.vue";
 import { useForm } from "@/hook/useForm.vue";
 import Swal from "sweetalert2";
 import { danger_alerta, show_alerta } from "@/components/AlertAdmin.vue";
-import { storeEstudiante } from "@/api/usuarios/estudianteApi";
+import { storePadre } from "@/api/usuarios/padreApi";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import user_default from "@/assets/image/user.png";
 
@@ -23,7 +23,7 @@ const closeModal = () => {
 const loading = ref(false);
 const img_preview = ref(null);
 const queryClient = useQueryClient();
-const estudiante = {
+const padre = {
     id: 0,
     nombre: null,
     paterno: null,
@@ -33,8 +33,9 @@ const estudiante = {
     expedido: null,
     estado_civil: null,
     genero: null,
-    fecha_alta: null,
-    matricula: null,
+    direccion: null,
+    telefono: null,
+    profesion: null,
     imagen: null,
 };
 
@@ -47,8 +48,9 @@ const validaciones = {
     email: { required: true, minString: 3, maxString: 90 },
     estado_civil: { required: true },
     genero: { required: true },
-    fecha_alta: { required: true },
-    matricula: { required: true },
+    direccion: { required: true, maxString: 250 },
+    telefono: { required: true, maxNumber: 9999999999 },
+    profesion: { required: true, maxString: 250 },
     imagen: { nullable: true },
 };
 
@@ -61,7 +63,7 @@ const [
     handleFile,
     handleBlur,
     handleRevalue,
-] = useForm(estudiante, validaciones);
+] = useForm(padre, validaciones);
 
 const handleImage = (e) => {
     handleFile(e);
@@ -85,7 +87,7 @@ const registrar = () => {
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 loading.value = true;
-                createEstudiante.mutate(formData);
+                createPadre.mutate(formData);
             },
         });
     } else {
@@ -93,15 +95,15 @@ const registrar = () => {
     }
 };
 
-const createEstudiante = useMutation({
-    mutationFn: storeEstudiante,
+const createPadre = useMutation({
+    mutationFn: storePadre,
     onSuccess: (response) => {
         if (response.status === true) {
-            queryClient.invalidateQueries("estudiantes");
+            queryClient.invalidateQueries("padres");
             show_alerta("Agregado Correctamente");
             loading.value = false;
             closeModal();
-            handleRevalue(estudiante);
+            handleRevalue(padre);
         } else {
             loading.value = false;
             errors.value = response.response.data.errors;
@@ -117,7 +119,7 @@ console.log(form.value)
 
 </script>
 <template>
-    <ModalMd :isModal="isModal" @close="closeModal" :title="'Registrar nuevo Estudiante'">
+    <ModalMd :isModal="isModal" @close="closeModal" :title="'Registrar nuevo Padre de Familia'">
         <form @submit.prevent="registrar" enctype="multipart/form-data">
             <div class="row">
                 <div v-if="img_preview" class="col-md-3 my-1 text-center">
@@ -231,21 +233,31 @@ console.log(form.value)
                 </div>
                 <div class="col-md-4 my-1">
                     <div class="form-group">
-                        <label class="form-label fw-bold" for="matricula">MATRICULA</label>
-                        <input type="text" name="matricula" @change="handleChange" :value="form.matricula"
+                        <label class="form-label fw-bold" for="matricula">TELEFONO</label>
+                        <input type="number" name="telefono" @change="handleChange" :value="form.telefono"
                             class="form-control" />
-                        <p class="fs-6 text-danger" v-if="errors.matricula">
-                            {{ errors.matricula }}
+                        <p class="fs-6 text-danger" v-if="errors.telefono">
+                            {{ errors.telefono }}
                         </p>
                     </div>
                 </div>
                 <div class="col-md-4 my-1">
                     <div class="form-group">
-                        <label class="form-label fw-bold" for="fecha_alta">FECHA</label>
-                        <input type="date" name="fecha_alta" @change="handleChange" :value="form.fecha_alta"
+                        <label class="form-label fw-bold" for="profesion">PROFESIÓN</label>
+                        <input type="text" name="profesion" @change="handleChange" :value="form.profesion"
                             class="form-control" />
-                        <p class="fs-6 text-danger" v-if="errors.fecha_alta">
-                            {{ errors.fecha_alta }}
+                        <p class="fs-6 text-danger" v-if="errors.profesion">
+                            {{ errors.profesion }}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 my-1">
+                    <div class="form-group">
+                        <label class="form-label fw-bold" for="direccion">DIRECCIÓN</label>
+                        <input type="text" name="direccion" @change="handleChange" :value="form.direccion"
+                            class="form-control" />
+                        <p class="fs-6 text-danger" v-if="errors.direccion">
+                            {{ errors.direccion }}
                         </p>
                     </div>
                 </div>

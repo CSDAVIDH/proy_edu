@@ -6,7 +6,7 @@ export const links = [
     },
     {
         name: 'Usuarios',
-        routes: ['admin.administrativos.index', 'admin.docentes.index', 'admin.estudiantes.index'],
+        routes: ['admin.administrativos.index', 'admin.docentes.index', 'admin.estudiantes.index', 'admin.padres.index'],
         icon: 'fa-solid fa-users',
         sublinks: [
             {
@@ -20,6 +20,10 @@ export const links = [
             {
                 name: 'Estudiantes',
                 route: 'admin.estudiantes.index'
+            },
+            {
+                name: 'Padres de Familia',
+                route: 'admin.padres.index'
             }
         ]
     },
@@ -67,7 +71,7 @@ export const links = [
         icon: 'fa-solid fa-book',
     },
     {
-        name: 'Boletines',
+        name: 'Certificados',
         route: 'admin.boletines.index',
         icon: 'fa-solid fa-ticket',
     },

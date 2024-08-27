@@ -19,7 +19,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 15px;
-    background-color: #EDEDED;
+    background-color: #ffffff;
     transition: all 0.5s ease-in-out;
 }
 .nav_admin.sidebar{
@@ -32,14 +32,17 @@
     padding-left: 15px 5px;
     color: #73879C;
     border: none;
+    background-color: transparent;
 }
 .nav_cards{
     display: flex;
     align-items: center;
     gap: 10px;
+    background-color: transparent;
 }
 
 .nav_cards_conf{
+    background-color: transparent;
     text-decoration: none;
     border: none;
 }

@@ -4,7 +4,7 @@ import ModalMd from '@/components/ModalMd.vue'
 import { useForm } from "@/hook/useForm.vue";
 import Swal from "sweetalert2";
 import { danger_alerta, show_alerta } from '@/components/AlertAdmin.vue';
-import { updateCurso } from '@/api/cursosApi';
+import { updateCurso } from '@/api/dashboardApi';
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 
 const props = defineProps({

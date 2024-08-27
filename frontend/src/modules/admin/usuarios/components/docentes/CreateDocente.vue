@@ -187,10 +187,10 @@ const createDocente = useMutation({
                     <div class="form-group">
                         <label class="form-label fw-bold" for="genero">GÉNERO</label>
                         <select class="form-control" name="genero" id="genero" @change="handleChange" @blur="handleBlur"
-                            required>
+                            :value="form.genero" required>
                             <option value="" selected>SELECCIONE UNA OPCIÓN</option>
-                            <option value="MASCULINO">MASCULINO</option>
-                            <option value="FEMENINO">FEMENINO</option>
+                            <option value="masculino">MASCULINO</option>
+                            <option value="femenino">FEMENINO</option>
                         </select>
                         <p class="fs-6 text-danger" v-if="errors.genero">
                             {{ errors.genero }}

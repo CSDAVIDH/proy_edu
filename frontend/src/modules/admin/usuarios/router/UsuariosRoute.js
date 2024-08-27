@@ -16,6 +16,11 @@ export default {
         path: 'estudiantes',
         name: 'admin.estudiantes.index',
         component: () => import('@/modules/admin/usuarios/pages/IndexEstudiante.vue'),
-      },   
+      },      
+      {
+        path: 'padres',
+        name: 'admin.padres.index',
+        component: () => import('@/modules/admin/usuarios/pages/IndexPadre.vue'),
+      },  
     ] 
 }

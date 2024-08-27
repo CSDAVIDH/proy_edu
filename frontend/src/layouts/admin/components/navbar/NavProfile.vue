@@ -42,12 +42,14 @@ const logout = () => {
             <i class="fa-solid fa-caret-down"></i>
         </button>
         <div class="profile_links" :class="open ? 'active' : ''">
-            <!-- <Link :href="route('index')" class="profile_link">
-                <span>Página Web</span>
-            </Link>
-            <Link :href="route('profile.show')" class="profile_link">
-                <span>Perfil</span>
-            </Link> -->
+            <button class="profile_link">
+                <span>Mi Cuenta</span>
+                <i class="fa-regular fa-user"></i>
+            </button>
+            <button class="profile_link">
+                <span>Mi Actividad</span>
+                <i class="fa-solid fa-list-check"></i>
+            </button>
             <button type="button" @click="logout" class="profile_link">
                 <span>Cerrar Sesión</span>
                 <i class="fa-solid fa-right-from-bracket"></i>
@@ -62,6 +64,7 @@ const logout = () => {
     align-items: center;
     border: none;
     gap: 2px;
+    background-color: transparent;
 }
 .button_profile img{
     height: 40px;

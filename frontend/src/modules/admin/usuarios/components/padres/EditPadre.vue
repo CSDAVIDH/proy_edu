@@ -4,7 +4,7 @@ import ModalMd from '@/components/ModalMd.vue'
 import { useForm } from "@/hook/useForm.vue";
 import Swal from "sweetalert2";
 import { danger_alerta, show_alerta } from '@/components/AlertAdmin.vue';
-import { updateEstudiante } from '@/api/usuarios/estudianteApi';
+import { updatePadre } from '@/api/usuarios/padreApi';
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import user_default from "@/assets/image/user.png";
 
@@ -48,10 +48,12 @@ const validaciones = {
   email: { required: true, minString: 3, maxString: 90 },
   estado_civil: { required: true },
   genero: { required: true },
-  fecha_alta: { required: true },
-  matricula: { required: true },
+  direccion: { required: true, maxString: 250 },
+  telefono: { required: true, maxNumber: 9999999999 },
+  profesion: { required: true, maxString: 250 },
   imagen: { nullable: true },
 };
+
 const [
   form,
   errors,
@@ -80,7 +82,7 @@ const registrar = () => {
       showLoaderOnConfirm: true,
       preConfirm: () => {
         loading.value = true;
-        actualizarEstudiante.mutate(formData);
+        actualizarPadre.mutate(formData);
       },
     });
   } else {
@@ -88,12 +90,12 @@ const registrar = () => {
   }
 }
 
-const actualizarEstudiante = useMutation({
-  mutationFn: updateEstudiante,
+const actualizarPadre = useMutation({
+  mutationFn: updatePadre,
   onSuccess: (response) => {
     if (response.status === true) {
       console.log(response)
-      queryClient.invalidateQueries('estudiantes');
+      queryClient.invalidateQueries('padres');
       show_alerta("Actualizado Correctamente");
       loading.value = false;
       closeModal();
@@ -216,8 +218,8 @@ const handleImage = (e) => {
         </div>
         <div class="col-md-4 my-1">
           <label class="form-label fw-bold" for="estado_civil">ESTADO CIVIL</label>
-          <select class="form-control" name="estado_civil" id="estado_civil" @change="handleChange" @blur="handleBlur"
-            :value="form.estado_civil" required>
+          <select class="form-control" name="estado_civil" id="estado_civil" @change="handleChange" @blur="handleBlur" :value="form.estado_civil"
+            required>
             <option value="" selected>SELECCIONE UNA OPCIÓN</option>
             <option value="soltero">SOLTERO</option>
             <option value="casado">CASADO</option>
@@ -230,19 +232,28 @@ const handleImage = (e) => {
         </div>
         <div class="col-md-4 my-1">
           <div class="form-group">
-            <label class="form-label fw-bold" for="matricula">MATRICULA</label>
-            <input type="text" name="matricula" @change="handleChange" :value="form.matricula" class="form-control" />
-            <p class="fs-6 text-danger" v-if="errors.matricula">
-              {{ errors.matricula }}
+            <label class="form-label fw-bold" for="matricula">TELEFONO</label>
+            <input type="number" name="telefono" @change="handleChange" :value="form.telefono" class="form-control" />
+            <p class="fs-6 text-danger" v-if="errors.telefono">
+              {{ errors.telefono }}
             </p>
           </div>
         </div>
         <div class="col-md-4 my-1">
           <div class="form-group">
-            <label class="form-label fw-bold" for="fecha_alta">FECHA</label>
-            <input type="date" name="fecha_alta" @change="handleChange" :value="form.fecha_alta" class="form-control" />
-            <p class="fs-6 text-danger" v-if="errors.fecha_alta">
-              {{ errors.fecha_alta }}
+            <label class="form-label fw-bold" for="profesion">PROFESIÓN</label>
+            <input type="text" name="profesion" @change="handleChange" :value="form.profesion" class="form-control" />
+            <p class="fs-6 text-danger" v-if="errors.profesion">
+              {{ errors.profesion }}
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4 my-1">
+          <div class="form-group">
+            <label class="form-label fw-bold" for="direccion">DIRECCIÓN</label>
+            <input type="text" name="direccion" @change="handleChange" :value="form.direccion" class="form-control" />
+            <p class="fs-6 text-danger" v-if="errors.direccion">
+              {{ errors.direccion }}
             </p>
           </div>
         </div>

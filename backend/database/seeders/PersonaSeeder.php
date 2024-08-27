@@ -100,7 +100,10 @@ class PersonaSeeder extends Seeder
         Persona::create(['nombre'=>'Gerardo Diego ', 'paterno'=>'Ibaña ', 'materno'=>'Mamani', 'ci'=>'913448', 'expedido'=>'BN', 'estado_civil'=>'soltero',  'genero'=>'masculino', 'user_id'=>85,]);
         Persona::create(['nombre'=>'Victor ', 'paterno'=>'Parra ', 'materno'=>'sarniento', 'ci'=>'913449', 'expedido'=>'LP', 'estado_civil'=>'soltero',  'genero'=>'masculino', 'user_id'=>86,]);
         Persona::create(['nombre'=>'Elizabeth', 'paterno'=>'Saaverdra ', 'materno'=>'chpoque', 'ci'=>'913450', 'expedido'=>'LP', 'estado_civil'=>'soltero',  'genero'=>'femenino', 'user_id'=>87,]);
-        
+        // padre de familia 
+        Persona::create(['nombre'=>'Elizabeth', 'paterno'=>'Saaverdra ', 'materno'=>'choque', 'ci'=>'913451', 'expedido'=>'LP', 'estado_civil'=>'casado',  'genero'=>'femenino', 'user_id'=>88,]);
+        Persona::create(['nombre'=>'Favio', 'paterno'=>'Contreras ', 'materno'=>'Mamani', 'ci'=>'913452', 'expedido'=>'LP', 'estado_civil'=>'viudo',  'genero'=>'masculino', 'user_id'=>89,]);
+        Persona::create(['nombre'=>'Juan Pablo', 'paterno'=>'Teran ', 'materno'=>'Huallpa', 'ci'=>'913453', 'expedido'=>'LP', 'estado_civil'=>'soltero',  'genero'=>'masculino', 'user_id'=>90,]);
         
     }
 }
